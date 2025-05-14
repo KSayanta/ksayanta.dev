@@ -5,7 +5,10 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "start": "node server.js"
+    "dev": "BROWSER=none netlify dev",
+    "build": "netlify build",
+    "preview": "netlify build --dry",
+    "deploy": "netlify deploy --prod"
   },
   "author": "ksayanta",
   "license": "ISC",
@@ -13,6 +16,7 @@
     "@google/genai": "^0.12.0",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "serverless-http": "^3.2.0"
   }
 }
