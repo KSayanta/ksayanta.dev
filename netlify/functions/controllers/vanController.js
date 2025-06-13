@@ -1,22 +1,24 @@
-import { neon } from "@neondatabase/serverless";
+import "dotenv/config";
 import * as jose from "jose";
+import { connectWithRetry } from "../utils/database";
 
-const sql = neon(process.env.NETLIFY_DATABASE_URL);
 const stack = process.env.STACK_PROJECT_ID;
 
 export async function getVans(_, res) {
   try {
-    const vans = await sql("SELECT * from vans;");
+    const vans = await connectWithRetry("SELECT * from vans ORDER BY vans.id;");
     res.json(vans);
   } catch (err) {
-    res.status(404).json({ message: err.message });
+    res.status(404).json({ response: false, message: err.message });
   }
 }
 
 export async function getVanById(req, res) {
   try {
     const { id } = req.params;
-    const van = await sql(`SELECT * FROM vans WHERE vans.id = ${id};`);
+    const van = await connectWithRetry(
+      `SELECT * FROM vans WHERE vans.id = ${id};`,
+    );
     if (van.length < 1) {
       throw {
         message: "Incorrect id",
@@ -24,7 +26,7 @@ export async function getVanById(req, res) {
     }
     res.json(van[0]);
   } catch (err) {
-    res.status(404).json({ message: err.message });
+    res.status(404).json({ response: false, message: err.message });
   }
 }
 
@@ -46,10 +48,10 @@ export async function getAdminVans(req, res) {
 
     const { payload } = await jose.jwtVerify(accessToken, jwks);
     const userId = payload.sub;
-
-    const adminVans = await sql(
-      `SELECT * FROM vans WHERE vans.hostId='${userId}'`,
+    const adminVans = await connectWithRetry(
+      `SELECT * FROM vans WHERE vans.hostId='${userId}' ORDER BY vans.id`,
     );
+
     if (adminVans.length < 1) {
       throw {
         status: 404,
@@ -58,8 +60,7 @@ export async function getAdminVans(req, res) {
     }
     res.json(adminVans);
   } catch (err) {
-    console.error(err);
-    res.status(err.status).json({ message: err.message });
+    res.status(err.status).json({ response: false, message: err.message });
   }
 }
 
@@ -82,21 +83,24 @@ export async function getAdminVansById(req, res) {
     const { payload } = await jose.jwtVerify(accessToken, jwks);
     const userId = payload.sub;
 
-    const adminVan = await sql(
+    const adminVan = await connectWithRetry(
       `SELECT * FROM vans WHERE vans.hostId='${userId}' AND vans.id=${id}`,
     );
     if (adminVan.length < 1) {
       throw {
+        status: 404,
         message: "Incorrect id",
       };
     }
     res.json(adminVan[0]);
   } catch (err) {
-    res.status(404).json({ message: err.message });
+    res.status(err.status).json({ response: false, message: err.message });
   }
 }
 
-// Mock user auth
+/**
+ * Mock user auth
+ */
 // export function authUsers(req, res) {
 //   const { email, password } = JSON.parse(req.body);
 //   const user = users.find(

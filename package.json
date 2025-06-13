@@ -18,6 +18,8 @@
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "jose": "^6.0.11",
+    "pg": "^8.16.0",
+    "retry": "^0.13.1",
     "serverless-http": "^3.2.0"
   },
   "devDependencies": {
