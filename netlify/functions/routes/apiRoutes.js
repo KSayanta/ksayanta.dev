@@ -10,6 +10,11 @@ import {
   getVanById,
   getVans,
 } from "../controllers/vanController.js";
+import {
+  getCurrentSeasonal,
+  getSeasonal,
+  getSeasonalPage,
+} from "../controllers/seasonalController.js";
 
 export const apiRouter = express.Router();
 
@@ -22,6 +27,9 @@ apiRouter.get("/vans", getVans);
 apiRouter.get("/vans/:id", getVanById);
 apiRouter.get("/admin/vans", getAdminVans);
 apiRouter.get("/admin/vans/:id", getAdminVansById);
+apiRouter.get("/current_seasonal", getCurrentSeasonal);
+apiRouter.get("/seasonal", getSeasonal);
+apiRouter.get("/seasonal/:page", getSeasonalPage);
 
 apiRouter.post("/recipe", recipeCtrl);
 // apiRouter.post("/login", authUsers);
