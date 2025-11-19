@@ -28,6 +28,8 @@ jobs:
         run: npm ci
 
       - name: 🌐 Fetch
+        env:
+          MAX_RETRIES: "3"
         run: npm run prefetch
 
       - name: 👷 Configure git
