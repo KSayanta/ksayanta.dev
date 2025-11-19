@@ -8,7 +8,9 @@
     "dev": "BROWSER=none netlify dev",
     "build": "netlify build",
     "preview": "netlify deploy",
-    "deploy": "netlify deploy --prod"
+    "deploy": "netlify deploy --prod",
+    "prefetch": "node tools/fetch.js",
+    "update": "node tools/update.js"
   },
   "author": "ksayanta",
   "license": "ISC",
@@ -23,6 +25,7 @@
     "serverless-http": "^3.2.0"
   },
   "devDependencies": {
+    "@types/node": "^24.10.1",
     "dotenv": "^16.5.0"
   }
 }

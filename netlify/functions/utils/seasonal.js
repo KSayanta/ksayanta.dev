@@ -1,4 +1,4 @@
-export default seasonal = [
+export const seasonal = [
   {
     ends_at: "2025-11-01T16:00:00+00:00",
     backgrounds: [

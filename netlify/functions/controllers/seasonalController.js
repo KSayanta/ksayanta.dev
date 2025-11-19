@@ -1,4 +1,4 @@
-import seasonal from "../utils/seasonal";
+import { seasonal } from "../utils/seasonal";
 const URL = "https://osu.ppy.sh/api/v2/seasonal-backgrounds";
 
 export async function getSeasonal(_, res) {
