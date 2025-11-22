@@ -39,7 +39,7 @@ jobs:
 
       - name: 🎉 Commit
         run: |
-          if ! git diff --quiet; then
+          if ! git diff --exit-code --name-only --quiet; then
             git add current_seasonal.json
             git commit -m "Update data from API"
             git push
